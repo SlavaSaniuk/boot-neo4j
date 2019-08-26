@@ -24,7 +24,7 @@ public class PostNode {
     private String post_owner;
 
     @Relationship(type = "COMMENTS_ON", direction = "INCOMING")
-    private final Set<CommentNode> post_comments = new HashSet<>();
+    private Set<CommentNode> post_comments = new HashSet<>();
 
     public PostNode commentate(CommentNode comment) {
         this.post_comments.add(comment);

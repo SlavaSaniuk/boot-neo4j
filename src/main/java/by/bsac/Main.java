@@ -81,12 +81,12 @@ public class Main implements CommandLineRunner {
 
         CommentNode comment3 = new CommentNode();
         comment3.setComment_text("Welcome to \"boot-neo4j\" project.");
-        comment3.setComment_text("Masha");
+        comment3.setComment_owner("Masha");
 
         //Commentate post
         CommentNode[] comments = {comment1, comment2, comment3};
-        for (CommentNode comment : comments)  post.commentate(comment);
-        this.repository.save(post);
+        for (CommentNode comment : comments)  this.service.commentate(post, comment);
+
 
     }
 }
