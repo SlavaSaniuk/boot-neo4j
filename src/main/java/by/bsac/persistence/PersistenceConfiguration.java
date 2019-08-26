@@ -12,10 +12,10 @@ public class PersistenceConfiguration {
     //Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceConfiguration.class);
 
-    @Bean
+    @Bean("sessionFactory")
     public SessionFactory getSessionFactory() {
         LOGGER.info("Create " +SessionFactory.class.getSimpleName() +" persistence bean.");
-        return new SessionFactory();
+        return new SessionFactory(this.getNeo4jConfiguration(), "by.bsac.models.nodes");
     }
 
     @Bean
@@ -26,7 +26,8 @@ public class PersistenceConfiguration {
         org.neo4j.ogm.config.Configuration.Builder config = new org.neo4j.ogm.config.Configuration.Builder();
 
         //Set neo4j parameters
-        config.uri("bolt://");
+        config.credentials("neo4j", "12345678");
+        config.uri("bolt://localhost");
 
         return config.build();
     }

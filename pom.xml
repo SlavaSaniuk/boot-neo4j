@@ -46,6 +46,16 @@
             <version>3.1.12</version>
         </dependency>
         <!-- End of New4j OGM dependencies -->
+
+        <!-- Other dependencies -->
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- End of other dependencies -->
     </dependencies>
 
 
