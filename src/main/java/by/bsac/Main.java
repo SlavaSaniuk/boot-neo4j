@@ -2,10 +2,13 @@ package by.bsac;
 
 
 import by.bsac.models.nodes.CommentNode;
+import by.bsac.models.nodes.GroupPostNode;
 import by.bsac.models.nodes.PostNode;
+import by.bsac.models.nodes.UserPostNode;
 import by.bsac.persistence.PersistenceConfiguration;
 import by.bsac.repositories.PostNodeRepository;
 import by.bsac.services.CommentsService;
+import by.bsac.services.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +37,8 @@ public class Main implements CommandLineRunner {
     private static ApplicationContext ctx;
 
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
-    @Autowired @Qualifier("CommentsService")
-    CommentsService service;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
-    PostNodeRepository repository;
-
+    PostService service;
 
     public static void main(String[] args) {
 
@@ -65,9 +63,9 @@ public class Main implements CommandLineRunner {
         LOGGER.info("Start to execute run() method.");
 
         //Create post
-        PostNode post = new PostNode();
+        UserPostNode post = new UserPostNode();
 
-        post.setPost_owner("Slava");
+        post.setPost_user_owner("Slava");
         post.setPost_text("Hello world!");
 
         //Create comments
@@ -86,6 +84,32 @@ public class Main implements CommandLineRunner {
         //Commentate post
         CommentNode[] comments = {comment1, comment2, comment3};
         for (CommentNode comment : comments)  this.service.commentate(post, comment);
+
+        //Create group post
+        GroupPostNode group_post = new GroupPostNode();
+
+        group_post.setPost_group_owner("Minsk_now@group");
+        group_post.setPost_text("Today is very warm.");
+
+        //Save it
+        group_post = (GroupPostNode) this.service.createPost(group_post);
+
+        CommentNode comment_to_group_1 = new CommentNode();
+        comment_to_group_1.setComment_text("It's true.");
+        comment_to_group_1.setComment_owner("Alexander");
+
+        CommentNode comment_to_group_2 = new CommentNode();
+        comment_to_group_2.setComment_text("I need a work! Please, help me.");
+        comment_to_group_2.setComment_owner("Ilya");
+
+        CommentNode[] comments_to_group_post = {comment_to_group_1, comment_to_group_2};
+        for (CommentNode comment : comments_to_group_post) this.service.commentate(group_post, comment);
+
+
+        //Get post from db
+        GroupPostNode postNode = (GroupPostNode) this.service.getPost(group_post);
+
+        LOGGER.info(postNode.toString());
 
 
     }
